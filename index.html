@@ -21,498 +21,104 @@
             --mt-white: #FFFFFF;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: var(--mt-cream); color: var(--mt-text); line-height: 1.8; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        .scroll-section { opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .scroll-section.visible { opacity: 1; transform: translateY(0); }
 
-        body {
-            font-family: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: var(--mt-cream);
-            color: var(--mt-text);
-            line-height: 1.8;
-        }
+        .hero { min-height: 55vh; background: linear-gradient(180deg, var(--mt-light) 0%, var(--mt-cream) 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 20px 40px; position: relative; }
+        .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat; opacity: 0.12; }
+        .hero-content { position: relative; z-index: 1; }
+        .couple-names { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 400; color: var(--mt-text-dark); letter-spacing: 0.15em; }
+        .couple-names .and { margin: 0 20px; color: var(--mt-accent); font-size: 0.6em; }
+        .wedding-date { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--mt-text); margin-top: 20px; letter-spacing: 0.2em; border-top: 1px solid var(--mt-dark); border-bottom: 1px solid var(--mt-dark); padding: 10px 30px; display: inline-block; }
 
-        .scroll-section {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+        section { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: clamp(1.4rem, 3.5vw, 2rem); color: var(--mt-text-dark); margin-bottom: 35px; font-weight: 400; letter-spacing: 0.15em; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 1px; background: var(--mt-dark); margin: 12px auto 0; }
+        .intro-text { text-align: center; padding: 30px 20px; font-size: 1.1rem; color: var(--mt-text); max-width: 700px; margin: 0 auto; line-height: 2; }
 
-        .scroll-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .gallery-section { padding: 40px 0; overflow: hidden; }
+        .gallery-container { position: relative; width: 100%; }
+        .gallery-wrapper { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%); }
+        .gallery-wrapper:active { cursor: grabbing; }
 
-        /* Hero Section */
-        .hero {
-            min-height: 55vh;
-            background: linear-gradient(180deg, var(--mt-light) 0%, var(--mt-cream) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 50px 20px 40px;
-            position: relative;
-        }
+        .gallery-card { position: absolute; width: 65%; height: 85%; border-radius: 24px; -webkit-border-radius: 24px; overflow: hidden; isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: radial-gradient(white, black); -webkit-backface-visibility: hidden; -moz-backface-visibility: hidden; -webkit-transform: translate3d(0, 0, 0); transform: translateZ(0); box-shadow: 0 15px 40px rgba(107, 91, 79, 0.2); transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); opacity: 0; z-index: 0; pointer-events: none; background-color: var(--mt-light); }
+        .gallery-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; border-radius: 24px; display: block; }
+        
+        .gallery-card.active { transform: translate(-50%, -50%) scale(1); opacity: 1; z-index: 3; pointer-events: auto; box-shadow: 0 20px 50px rgba(107, 91, 79, 0.35); }
+        .gallery-card.prev { left: 12%; transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; z-index: 2; pointer-events: auto; cursor: pointer; }
+        .gallery-card.next { left: 88%; transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; z-index: 2; pointer-events: auto; cursor: pointer; }
+        .gallery-card.prev-far { left: -25%; transform: translate(-50%, -50%) scale(0.7); opacity: 0; z-index: 1; }
+        .gallery-card.next-far { left: 125%; transform: translate(-50%, -50%) scale(0.7); opacity: 0; z-index: 1; }
 
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat;
-            opacity: 0.12;
-        }
+        .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2.5rem; color: var(--mt-white); text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); cursor: pointer; z-index: 20; padding: 20px; transition: all 0.3s; user-select: none; display: flex; align-items: center; justify-content: center; }
+        .gallery-nav:hover { color: var(--mt-accent); transform: translateY(-50%) scale(1.2); }
+        .gallery-prev { left: 2%; }
+        .gallery-next { right: 2%; }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
+        .event-card { background: var(--mt-cream); padding: 35px 30px; border-radius: 20px; text-align: center; max-width: 500px; margin: 0 auto; }
+        .event-card .icon { font-size: 2.8rem; margin-bottom: 15px; }
+        .event-card h3 { color: var(--mt-text-dark); margin-bottom: 15px; font-weight: 500; }
+        .event-card p { margin-bottom: 8px; }
+        .event-card .time { font-size: 1.4rem; color: var(--mt-accent); font-weight: 500; margin-bottom: 12px; }
+        .event-card .date { font-size: 1.1rem; color: var(--mt-text); margin-bottom: 15px; }
+        .location-link { display: inline-flex; align-items: center; color: var(--mt-accent); text-decoration: none; margin-left: 8px; font-size: 1.2rem; transition: transform 0.3s; }
+        .location-link:hover { transform: scale(1.1); }
 
-        .couple-names {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            font-weight: 400;
-            color: var(--mt-text-dark);
-            letter-spacing: 0.15em;
-        }
+        .rsvp-form { background: var(--mt-white); padding: 35px; border-radius: 20px; max-width: 550px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 6px; color: var(--mt-text-dark); font-weight: 500; }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--mt-dark); border-radius: 20px; font-size: 0.95rem; background: var(--mt-cream); color: var(--mt-text); transition: border-color 0.3s; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--mt-accent); }
+        .form-group textarea { min-height: 60px; resize: vertical; border-radius: 15px; }
 
-        .couple-names .and {
-            margin: 0 20px;
-            color: var(--mt-accent);
-            font-size: 0.6em;
-        }
+        .radio-group { display: flex; gap: 22px; flex-wrap: wrap; }
+        .radio-group label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: normal; }
+        .radio-group input[type="radio"] { appearance: none; -webkit-appearance: none; width: 11px; height: 11px; border: 1px solid var(--mt-dark); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; position: relative; background: var(--mt-cream); flex-shrink: 0; margin: 0; }
+        .radio-group input[type="radio"]:checked { border-color: var(--mt-accent); background: var(--mt-accent); }
+        .radio-group input[type="radio"]:checked::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 4px; height: 4px; background: white; border-radius: 50%; }
 
-        .wedding-date {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            color: var(--mt-text);
-            margin-top: 20px;
-            letter-spacing: 0.2em;
-            border-top: 1px solid var(--mt-dark);
-            border-bottom: 1px solid var(--mt-dark);
-            padding: 10px 30px;
-            display: inline-block;
-        }
+        .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--mt-brown) 0%, var(--mt-accent) 100%); color: white; border: none; border-radius: 10px; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; font-weight: 500; letter-spacing: 0.1em; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(184, 160, 137, 0.4); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        section {
-            padding: 50px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .address-group { display: none; margin-top: 12px; padding: 12px; background: var(--mt-light); border-radius: 8px; }
+        .address-group.show { display: block; }
 
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
-            color: var(--mt-text-dark);
-            margin-bottom: 35px;
-            font-weight: 400;
-            letter-spacing: 0.15em;
-        }
+        footer { background: var(--mt-text-dark); color: var(--mt-light); text-align: center; padding: 25px 20px; margin-top: 20px; }
+        footer p { opacity: 0.8; font-size: 0.95rem; }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 1px;
-            background: var(--mt-dark);
-            margin: 12px auto 0;
-        }
-
-        .intro-text {
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 1.1rem;
-            color: var(--mt-text);
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 2;
-        }
-
-        /* --- 全新優化後的照片輪播 (Gallery) 樣式 --- */
-        .gallery-section {
-            padding: 40px 0;
-            overflow: hidden;
-        }
-
-        .gallery-wrapper {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: grab;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: pan-y; /* 允許上下滾動網頁，但攔截左右滑動 */
-        }
-
-        .gallery-wrapper:active {
-            cursor: grabbing;
-        }
-
-        .gallery-card {
-            position: absolute;
-            width: 55%;
-            height: 85%;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(107, 91, 79, 0.2);
-            /* 溫柔緩慢的動畫曲線設計 */
-            transition: all 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0;
-            z-index: 0;
-            pointer-events: none; /* 預設無法點擊，防止點到隱藏照片 */
-        }
-
-        .gallery-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none; /* 防止圖片預設的拖拽行為干擾 */
-        }
-
-        /* 中間：當前照片 */
-        .gallery-card.active {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            z-index: 3;
-            pointer-events: auto;
-            box-shadow: 0 20px 50px rgba(107, 91, 79, 0.35);
-        }
-
-        /* 左側照片 */
-        .gallery-card.prev {
-            left: 20%;
-            transform: translate(-50%, -50%) scale(0.75);
-            opacity: 0.5;
-            z-index: 2;
-            pointer-events: auto; /* 允許點擊切換 */
-            cursor: pointer;
-        }
-
-        /* 右側照片 */
-        .gallery-card.next {
-            left: 80%;
-            transform: translate(-50%, -50%) scale(0.75);
-            opacity: 0.5;
-            z-index: 2;
-            pointer-events: auto; /* 允許點擊切換 */
-            cursor: pointer;
-        }
-
-        /* 隱藏於最左側 */
-        .gallery-card.prev-far {
-            left: -10%;
-            transform: translate(-50%, -50%) scale(0.6);
-            opacity: 0;
-            z-index: 1;
-        }
-
-        /* 隱藏於最右側 */
-        .gallery-card.next-far {
-            left: 110%;
-            transform: translate(-50%, -50%) scale(0.6);
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .gallery-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2.5rem;
-            color: var(--mt-brown);
-            cursor: pointer;
-            z-index: 20;
-            padding: 20px;
-            transition: all 0.3s;
-            user-select: none;
-            background: rgba(253, 248, 243, 0.5);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .gallery-nav:hover {
-            color: var(--mt-accent);
-            background: rgba(253, 248, 243, 0.9);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .gallery-prev { left: 8%; }
-        .gallery-next { right: 8%; }
-
-        /* Event Details */
-        .event-card {
-            background: var(--mt-cream);
-            padding: 35px 30px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .event-card .icon {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-        }
-
-        .event-card h3 {
-            color: var(--mt-text-dark);
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .event-card p {
-            margin-bottom: 8px;
-        }
-
-        .event-card .time {
-            font-size: 1.4rem;
-            color: var(--mt-accent);
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .event-card .date {
-            font-size: 1.1rem;
-            color: var(--mt-text);
-            margin-bottom: 15px;
-        }
-
-        .location-link {
-            display: inline-flex;
-            align-items: center;
-            color: var(--mt-accent);
-            text-decoration: none;
-            margin-left: 8px;
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-
-        .location-link:hover {
-            transform: scale(1.1);
-        }
-
-        /* RSVP Form */
-        .rsvp-form {
-            background: var(--mt-white);
-            padding: 35px;
-            border-radius: 20px;
-            max-width: 550px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--mt-text-dark);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--mt-dark);
-            border-radius: 20px;
-            font-size: 0.95rem;
-            background: var(--mt-cream);
-            color: var(--mt-text);
-            transition: border-color 0.3s;
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--mt-accent);
-        }
-
-        .form-group textarea {
-            min-height: 60px;
-            resize: vertical;
-            border-radius: 15px;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 22px;
-            flex-wrap: wrap;
-        }
-
-        .radio-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-weight: normal;
-        }
-
-        .radio-group input[type="radio"] {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 12px;
-            height: 12px;
-            border: 1px solid var(--mt-dark);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            background: var(--mt-cream);
-            flex-shrink: 0;
-            margin: 2px;
-        }
-
-        .radio-group input[type="radio"]:checked {
-            border-color: var(--mt-accent);
-            background: var(--mt-accent);
-        }
-
-        .radio-group input[type="radio"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--mt-brown) 0%, var(--mt-accent) 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(184, 160, 137, 0.4);
-        }
-
-        .form-message {
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .form-message.success {
-            display: block;
-            background: #C6F6D5;
-            color: #22543D;
-        }
-
-        .address-group {
-            display: none;
-            margin-top: 12px;
-            padding: 12px;
-            background: var(--mt-light);
-            border-radius: 8px;
-        }
-
-        .address-group.show {
-            display: block;
-        }
-
-        footer {
-            background: var(--mt-text-dark);
-            color: var(--mt-light);
-            text-align: center;
-            padding: 25px 20px;
-            margin-top: 20px;
-        }
-
-        footer p {
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .hero {
-                min-height: 45vh;
-                padding: 40px 15px 30px;
-            }
-
-            .couple-names {
-                font-size: clamp(1.6rem, 7vw, 2.4rem);
-            }
-
+            .hero { min-height: 45vh; padding: 40px 15px 30px; }
+            .couple-names { font-size: clamp(1.6rem, 7vw, 2.4rem); }
             section { padding: 40px 15px; }
-
-            .gallery-wrapper { height: 380px; }
-
-            .gallery-card {
-                width: 70%;
-                height: 80%;
-            }
-
-            .gallery-card.prev { left: 10%; transform: translate(-50%, -50%) scale(0.7); }
-            .gallery-card.next { left: 90%; transform: translate(-50%, -50%) scale(0.7); }
-            .gallery-card.prev-far { left: -30%; }
-            .gallery-card.next-far { left: 130%; }
-
-            .gallery-nav {
-                font-size: 2rem;
-                padding: 10px;
-                width: 40px;
-                height: 40px;
-            }
-
-            .gallery-prev { left: 2%; }
-            .gallery-next { right: 2%; }
-
+            .gallery-wrapper { height: 420px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); }
+            .gallery-card { width: 78%; height: 85%; border-radius: 20px; }
+            .gallery-card img { border-radius: 20px; }
+            .gallery-card.prev { left: 4%; transform: translate(-50%, -50%) scale(0.85); }
+            .gallery-card.next { left: 96%; transform: translate(-50%, -50%) scale(0.85); }
+            .gallery-card.prev-far { left: -40%; }
+            .gallery-card.next-far { left: 140%; }
+            .gallery-nav { font-size: 2rem; padding: 10px; }
+            .gallery-prev { left: 0%; }
+            .gallery-next { right: 0%; }
             .rsvp-form { padding: 25px 20px; }
             .radio-group { gap: 18px; }
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
     <section class="hero scroll-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <div class="couple-names">
-                政廷 <span class="and">&</span> 鈺鎔
-            </div>
+            <div class="couple-names">政廷 <span class="and">&</span> 鈺鎔</div>
             <div class="wedding-date">2026年9月12日 我們的婚禮</div>
         </div>
     </section>
 
-    <!-- Intro Text -->
     <section class="scroll-section">
         <div class="intro-text">
             <p>在這特別的日子裡，我們希望與最親愛的家人朋友們一同分享這份幸福</p>
@@ -520,17 +126,17 @@
         </div>
     </section>
 
-    <!-- Photo Gallery -->
     <section class="gallery-section scroll-section">
         <h2 class="section-title">Our Memories</h2>
-        <div class="gallery-wrapper" id="galleryWrapper">
+        <div class="gallery-container">
+            <div class="gallery-wrapper" id="galleryWrapper">
+                <div id="galleryCards"></div>
+            </div>
             <span class="gallery-nav gallery-prev" onclick="goToPrev()">&#10094;</span>
-            <div id="galleryCards"></div>
             <span class="gallery-nav gallery-next" onclick="goToNext()">&#10095;</span>
         </div>
     </section>
 
-    <!-- Event Details -->
     <section class="scroll-section">
         <h2 class="section-title">婚禮資訊</h2>
         <div class="event-card">
@@ -542,7 +148,6 @@
         </div>
     </section>
 
-    <!-- RSVP Form -->
     <section class="scroll-section">
         <h2 class="section-title">出席回覆</h2>
         <form class="rsvp-form" id="rsvp-form">
@@ -559,14 +164,8 @@
             <div class="form-group">
                 <label>是否出席婚禮？ *</label>
                 <div class="radio-group">
-                    <label>
-                        <input type="radio" name="attendance" value="yes" required>
-                        參加
-                    </label>
-                    <label>
-                        <input type="radio" name="attendance" value="no">
-                        無法參加
-                    </label>
+                    <label><input type="radio" name="attendance" value="yes" required> 參加</label>
+                    <label><input type="radio" name="attendance" value="no"> 無法參加</label>
                 </div>
             </div>
 
@@ -590,14 +189,8 @@
             <div class="form-group">
                 <label>是否需要紙本喜帖？</label>
                 <div class="radio-group">
-                    <label>
-                        <input type="radio" name="paper-invite" value="no" checked>
-                        不需要
-                    </label>
-                    <label>
-                        <input type="radio" name="paper-invite" value="yes">
-                        需要
-                    </label>
+                    <label><input type="radio" name="paper-invite" value="no" checked> 不需要</label>
+                    <label><input type="radio" name="paper-invite" value="yes"> 需要</label>
                 </div>
                 <div class="address-group" id="address-group">
                     <label for="address">寄送地址 *</label>
@@ -615,19 +208,17 @@
                 <textarea id="message" name="message" required placeholder="請留下您對新人的祝福..."></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">送出回覆</button>
-            <div class="form-message" id="form-message"></div>
+            <button type="submit" class="submit-btn" id="submit-btn">送出回覆</button>
         </form>
     </section>
 
-    <!-- Footer -->
     <footer class="scroll-section">
         <p>感謝您見證我們的幸福時刻</p>
         <p style="margin-top: 6px;">政廷 & 鈺鎔 &bull; 2026年9月12日</p>
     </footer>
 
     <script>
-        // Gallery Data (照片清單)
+        // 照片輪播邏輯
         const photos = [
             { src: 'images/photo1.jpg', fallback: 'https://picsum.photos/seed/wedding1/600/500' },
             { src: 'images/photo2.jpg', fallback: 'https://picsum.photos/seed/wedding2/600/500' },
@@ -641,138 +232,80 @@
         const cardsContainer = document.getElementById('galleryCards');
         const wrapper = document.getElementById('galleryWrapper');
 
-        // --- 全新 JavaScript 渲染邏輯 ---
         function initGallery() {
             cardsContainer.innerHTML = '';
-            
-            // 將所有照片先渲染至 DOM 中，只靠 CSS class 控制位置，動畫最順暢
             photos.forEach((photo, index) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-card';
                 card.innerHTML = `<img src="${photo.src}" alt="Photo ${index + 1}" onerror="this.src='${photo.fallback}'">`;
-                
-                // 點擊左右兩側半透明的照片時，也能溫柔地觸發切換
                 card.addEventListener('click', () => {
                     if (card.classList.contains('prev')) goToPrev();
                     if (card.classList.contains('next')) goToNext();
                 });
-                
                 cardsContainer.appendChild(card);
             });
-            
             updateGallery();
         }
 
-        // 依據 currentIndex 重新分配卡片的 class
         function updateGallery() {
             const cards = document.querySelectorAll('.gallery-card');
             const total = cards.length;
-
             cards.forEach((card, index) => {
-                // 先清除所有的狀態 class
                 card.classList.remove('active', 'prev', 'next', 'prev-far', 'next-far');
-
-                // 計算相對位置並賦予 class，CSS 的 transition 會自動接手產生流暢動畫
-                if (index === currentIndex) {
-                    card.classList.add('active');
-                } else if (index === (currentIndex - 1 + total) % total) {
-                    card.classList.add('prev');
-                } else if (index === (currentIndex + 1) % total) {
-                    card.classList.add('next');
-                } else if (index === (currentIndex - 2 + total) % total) {
-                    card.classList.add('prev-far');
-                } else if (index === (currentIndex + 2) % total) {
-                    card.classList.add('next-far');
-                }
+                if (index === currentIndex) card.classList.add('active');
+                else if (index === (currentIndex - 1 + total) % total) card.classList.add('prev');
+                else if (index === (currentIndex + 1) % total) card.classList.add('next');
+                else if (index === (currentIndex - 2 + total) % total) card.classList.add('prev-far');
+                else if (index === (currentIndex + 2) % total) card.classList.add('next-far');
             });
         }
 
-        // 下一張 / 上一張功能
-        function goToNext() {
-            currentIndex = (currentIndex + 1) % photos.length;
-            updateGallery();
-        }
+        function goToNext() { currentIndex = (currentIndex + 1) % photos.length; updateGallery(); }
+        function goToPrev() { currentIndex = (currentIndex - 1 + photos.length) % photos.length; updateGallery(); }
 
-        function goToPrev() {
-            currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-            updateGallery();
-        }
+        let startX = 0, startY = 0, isDragging = false;
+        const SWIPE_THRESHOLD = 30;
 
-        // --- 手機與電腦通用的順暢滑動檢測 (Swipe Detection) ---
-        let startX = 0;
-        let isDragging = false;
-        const SWIPE_THRESHOLD = 50; // 滑動超過 50px 判定為切換
-
-        // 手機觸控事件
-        wrapper.addEventListener('touchstart', e => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
-        }, { passive: true });
-
+        wrapper.addEventListener('touchstart', e => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; isDragging = true; }, { passive: true });
+        wrapper.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX, currentY = e.touches[0].clientY;
+            if (Math.abs(startX - currentX) > Math.abs(startY - currentY)) e.preventDefault();
+        }, { passive: false });
         wrapper.addEventListener('touchend', e => {
             if (!isDragging) return;
             const endX = e.changedTouches[0].clientX;
-            handleSwipe(startX, endX);
+            if (Math.abs(startX - endX) > SWIPE_THRESHOLD) startX - endX > 0 ? goToNext() : goToPrev();
             isDragging = false;
         });
 
-        // 電腦滑鼠事件
-        wrapper.addEventListener('mousedown', e => {
-            startX = e.clientX;
-            isDragging = true;
-        });
-
+        wrapper.addEventListener('mousedown', e => { startX = e.clientX; isDragging = true; });
         wrapper.addEventListener('mouseup', e => {
             if (!isDragging) return;
             const endX = e.clientX;
-            handleSwipe(startX, endX);
+            if (Math.abs(startX - endX) > SWIPE_THRESHOLD) startX - endX > 0 ? goToNext() : goToPrev();
             isDragging = false;
         });
+        wrapper.addEventListener('mouseleave', () => { isDragging = false; });
 
-        wrapper.addEventListener('mouseleave', () => {
-            isDragging = false;
-        });
-
-        // 判斷滑動方向並執行
-        function handleSwipe(start, end) {
-            const diff = start - end; // 正值表示向左滑(看下一張)，負值表示向右滑(看上一張)
-            
-            if (Math.abs(diff) > SWIPE_THRESHOLD) {
-                if (diff > 0) {
-                    goToNext();
-                } else {
-                    goToPrev();
-                }
-            }
-        }
-
-        // 鍵盤左右鍵支援
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft') goToPrev();
             if (e.key === 'ArrowRight') goToNext();
         });
 
-
-        // --- 原有表單與滾動動畫邏輯 ---
         function handleScrollAnimation() {
             const sections = document.querySelectorAll('.scroll-section');
             const windowHeight = window.innerHeight;
-
             sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                const triggerPoint = windowHeight * 0.85;
-
-                if (sectionTop < triggerPoint) {
-                    section.classList.add('visible');
-                }
+                if (section.getBoundingClientRect().top < windowHeight * 0.85) section.classList.add('visible');
             });
         }
 
-        // Initialize
         initGallery();
         window.addEventListener('scroll', handleScrollAnimation);
-        handleScrollAnimation(); // Initial check
+        handleScrollAnimation();
 
+        // 表單邏輯
         function generateDietaryOptions() {
             const guestCount = parseInt(document.getElementById('guest-count').value) || 1;
             const container = document.getElementById('dietary-options');
@@ -790,11 +323,7 @@
                 select.id = `dietary-${i}`;
                 select.name = `dietary-${i}`;
                 select.required = true;
-                select.innerHTML = `
-                    <option value="">請選擇</option>
-                    <option value="none">葷食</option>
-                    <option value="vegetarian">素食</option>
-                `;
+                select.innerHTML = `<option value="">請選擇</option><option value="none">葷食</option><option value="vegetarian">素食</option>`;
 
                 container.appendChild(label);
                 container.appendChild(select);
@@ -830,20 +359,54 @@
             });
         });
 
+        // 這裡已經替換為你的 Google Apps Script 網址
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxX0sYE5jSdqWBPRaMWD8_PDAKT_qOj8w6wy0-6bALXYNOmzxqidczcYxetamKMU4mnGw/exec'; 
+
         document.getElementById('rsvp-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '資料傳送中...';
+
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-            console.log('表單提交：', data);
+            const name = formData.get('name');
+            const attendance = formData.get('attendance');
+            
+            // 將多位賓客的飲食習慣合併為一個欄位 (dietary_summary) 送到 Google Sheet
+            let dietarySummaryArray = [];
+            if (attendance === 'yes') {
+                const guestCount = parseInt(formData.get('guest-count')) || 0;
+                for (let i = 1; i <= guestCount; i++) {
+                    const dietVal = formData.get(`dietary-${i}`);
+                    const dietText = dietVal === 'vegetarian' ? '素食' : (dietVal === 'none' ? '葷食' : '未選擇');
+                    dietarySummaryArray.push(`第${i}位:${dietText}`);
+                }
+            }
+            formData.set('dietary_summary', dietarySummaryArray.join(' , '));
 
-            const messageEl = document.getElementById('form-message');
-            messageEl.className = 'form-message success';
-            messageEl.textContent = '感謝您的回覆！我們期待在婚禮上與您相見。';
-            messageEl.style.display = 'block';
-
-            this.reset();
-            document.getElementById('guest-count-group').style.display = 'none';
-            document.getElementById('address-group').classList.remove('show');
+            // 傳送資料到 Google Apps Script
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    // 成功跳出客製化彈窗
+                    alert(`感謝 ${name} 的回覆！我們期待在婚禮上與您相見 😊`);
+                    
+                    // 重置表單與隱藏動態欄位
+                    this.reset();
+                    document.getElementById('guest-count-group').style.display = 'none';
+                    document.getElementById('dietary-group').style.display = 'none';
+                    document.getElementById('dietary-options').innerHTML = '';
+                    document.getElementById('address-group').classList.remove('show');
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '送出回覆';
+                })
+                .catch(error => {
+                    alert('哎呀，傳送失敗了，請檢查網路後再試一次！');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '送出回覆';
+                    console.error('Error!', error.message);
+                });
         });
     </script>
 </body>
