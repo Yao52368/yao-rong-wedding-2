@@ -32,7 +32,7 @@
         .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat; opacity: 0.12; }
         .hero-content { position: relative; z-index: 1; }
         .couple-names { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 400; color: var(--mt-text-dark); letter-spacing: 0.15em; }
-        .couple-names .and { margin: 0 20px; color: var(--mt-accent); font-size: 0.6em; }
+        .couple-names .and { margin: 0 15px; color: var(--mt-accent); font-size: 0.6em; }
         .wedding-date { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--mt-text); margin-top: 20px; letter-spacing: 0.2em; border-top: 1px solid var(--mt-dark); border-bottom: 1px solid var(--mt-dark); padding: 10px 30px; display: inline-block; }
 
         section { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
@@ -114,7 +114,7 @@
     <section class="hero scroll-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <div class="couple-names">政廷 <span class="and">&</span> 鈺鎔</div>
+            <div class="couple-names">Zheng Ting <span class="and">&</span> Yu Rong</div>
             <div class="wedding-date">2026年9月12日 我們的婚禮</div>
         </div>
     </section>
@@ -214,7 +214,7 @@
 
     <footer class="scroll-section">
         <p>感謝您見證我們的幸福時刻</p>
-        <p style="margin-top: 6px;">政廷 & 鈺鎔 &bull; 2026年9月12日</p>
+        <p style="margin-top: 6px;">Zheng Ting & Yu Rong &bull; 2026年9月12日</p>
     </footer>
 
     <script>
@@ -359,7 +359,6 @@
             });
         });
 
-        // 這裡已經替換為你的 Google Apps Script 網址
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxX0sYE5jSdqWBPRaMWD8_PDAKT_qOj8w6wy0-6bALXYNOmzxqidczcYxetamKMU4mnGw/exec'; 
 
         document.getElementById('rsvp-form').addEventListener('submit', function(e) {
@@ -389,7 +388,7 @@
             fetch(scriptURL, { method: 'POST', body: formData })
                 .then(response => {
                     // 成功跳出客製化彈窗
-                    alert(`謝謝 ${name} 的回覆！我們期待在婚禮上與您相見 😊`);
+                    alert(`感謝 ${name} 的回覆！我們期待在婚禮上與您相見 😊`);
                     
                     // 重置表單與隱藏動態欄位
                     this.reset();
