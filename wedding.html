@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>婚禮邀請 | Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* 日式奶茶色系 */
+        :root {
+            --mt-cream: #FDF8F3;
+            --mt-light: #F5E6D3;
+            --mt-medium: #E8D5C4;
+            --mt-dark: #D4C4B0;
+            --mt-brown: #C9B8A0;
+            --mt-text: #6B5B4F;
+            --mt-text-dark: #4A3F35;
+            --mt-accent: #B8A089;
+            --mt-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--mt-cream);
+            color: var(--mt-text);
+            line-height: 1.8;
+        }
+
+        /* Scroll Animation Classes */
+        .scroll-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 55vh;
+            background: linear-gradient(180deg, var(--mt-light) 0%, var(--mt-cream) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px 40px;
+            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat;
+            opacity: 0.12;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .couple-names {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 400;
+            color: var(--mt-text-dark);
+            letter-spacing: 0.15em;
+        }
+
+        .couple-names .and {
+            margin: 0 20px;
+            color: var(--mt-accent);
+            font-size: 0.6em;
+        }
+
+        .wedding-date {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--mt-text);
+            margin-top: 20px;
+            letter-spacing: 0.2em;
+            border-top: 1px solid var(--mt-dark);
+            border-bottom: 1px solid var(--mt-dark);
+            padding: 10px 30px;
+            display: inline-block;
+        }
+
+        /* Sections */
+        section {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            color: var(--mt-text-dark);
+            margin-bottom: 35px;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 1px;
+            background: var(--mt-dark);
+            margin: 12px auto 0;
+        }
+
+        /* Intro Text */
+        .intro-text {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 1.1rem;
+            color: var(--mt-text);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 2;
+        }
+
+        /* Stacked Carousel Gallery */
+        .gallery-section {
+            padding: 40px 0;
+            overflow: hidden;
+        }
+
+        .gallery-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
+        }
+
+        .gallery-wrapper:active {
+            cursor: grabbing;
+        }
+
+        /* 所有照片卡片 */
+        .gallery-card {
+            position: absolute;
+            width: 55%;
+            height: 85%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(107, 91, 79, 0.35);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-card.fade-img > img {
+            opacity: 0;
+        }
+
+        /* 左側位置 */
+        .gallery-card.position-left-far {
+            left: -30%;
+            transform: translateY(-50%) scale(0.7);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .gallery-card.position-left {
+            left: 3%;
+            top: 50%;
+            transform: translateY(-50%) scale(0.65);
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        /* 中間位置 */
+        .gallery-card.position-center {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        /* 右側位置 */
+        .gallery-card.position-right {
+            right: 3%;
+            top: 50%;
+            transform: translateY(-50%) scale(0.65);
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        .gallery-card.position-right-far {
+            right: -30%;
+            transform: translateY(-50%) scale(0.7);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* Navigation arrows */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            color: var(--mt-brown);
+            cursor: pointer;
+            z-index: 20;
+            padding: 20px;
+            transition: all 0.3s;
+            user-select: none;
+            background: rgba(253, 248, 243, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-nav:hover {
+            color: var(--mt-accent);
+            background: rgba(253, 248, 243, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .gallery-prev { left: 12%; }
+        .gallery-next { right: 12%; }
+
+        /* Event Details */
+        .event-card {
+            background: var(--mt-cream);
+            padding: 35px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .event-card .icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .event-card h3 {
+            color: var(--mt-text-dark);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .event-card p {
+            margin-bottom: 8px;
+        }
+
+        .event-card .time {
+            font-size: 1.4rem;
+            color: var(--mt-accent);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .event-card .date {
+            font-size: 1.1rem;
+            color: var(--mt-text);
+            margin-bottom: 15px;
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--mt-accent);
+            text-decoration: none;
+            margin-left: 8px;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .location-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* RSVP Form */
+        .rsvp-form {
+            background: var(--mt-white);
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--mt-text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid var(--mt-dark);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--mt-cream);
+            color: var(--mt-text);
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--mt-accent);
+        }
+
+        .form-group textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .radio-group input[type="radio"] {
+            width: auto;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--mt-brown) 0%, var(--mt-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 160, 137, 0.4);
+        }
+
+        .form-message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .form-message.success {
+            display: block;
+            background: #C6F6D5;
+            color: #22543D;
+        }
+
+        .form-message.error {
+            display: block;
+            background: #FED7D7;
+            color: #742A2A;
+        }
+
+        .address-group {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--mt-light);
+            border-radius: 8px;
+        }
+
+        .address-group.show {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--mt-text-dark);
+            color: var(--mt-light);
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 20px;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 45vh;
+                padding: 40px 15px 30px;
+            }
+
+            .couple-names {
+                font-size: clamp(1.6rem, 7vw, 2.4rem);
+            }
+
+            .couple-names .and {
+                margin: 0 10px;
+                font-size: 0.5em;
+            }
+
+            section {
+                padding: 40px 15px;
+            }
+
+            .gallery-wrapper {
+                height: 380px;
+            }
+
+            .gallery-card {
+                width: 70%;
+                height: 80%;
+            }
+
+            .gallery-card.position-left {
+                left: -20%;
+                transform: translateY(-50%) scale(0.6);
+            }
+
+            .gallery-card.position-right {
+                right: -20%;
+                transform: translateY(-50%) scale(0.6);
+            }
+
+            .gallery-nav {
+                font-size: 2rem;
+                padding: 10px;
+                background: rgba(253, 248, 243, 0.7);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .gallery-prev { left: 5%; }
+            .gallery-next { right: 5%; }
+
+            .rsvp-form {
+                padding: 25px 20px;
+            }
+
+            .radio-group {
+                gap: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero scroll-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="couple-names">
+                政廷 <span class="and">&</span> 鈺鎔
+            </div>
+            <div class="wedding-date">2026年9月12日 我們的婚禮</div>
+        </div>
+    </section>
+
+    <!-- Intro Text -->
+    <section class="scroll-section">
+        <div class="intro-text">
+            <p>在這特別的日子裡，我們希望與最親愛的家人朋友們一同分享這份幸福</p>
+            <p style="margin-top: 15px; color: var(--mt-accent);">誠摯邀請您前來見證我們的愛情</p>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section class="gallery-section scroll-section">
+        <h2 class="section-title">Our Memories</h2>
+        <div class="gallery-wrapper" id="galleryWrapper">
+            <span class="gallery-nav gallery-prev" onclick="goToPrev()">&#10094;</span>
+            <div id="galleryCards"></div>
+            <span class="gallery-nav gallery-next" onclick="goToNext()">&#10095;</span>
+        </div>
+    </section>
+
+    <!-- Event Details -->
+    <section class="scroll-section">
+        <h2 class="section-title">婚禮資訊</h2>
+        <div class="event-card">
+            <div class="icon">💒</div>
+            <h3>婚禮晚宴</h3>
+            <p class="date">2026年9月12日 星期六</p>
+            <p class="time">16:00 證婚儀式 &bull; 17:00 晚宴</p>
+            <p>辛志平 taivii 餐酒館 <a href="https://www.google.com/maps/search/?api=1&query=辛志平taivii餐酒館" target="_blank" class="location-link">📍</a></p>
+        </div>
+    </section>
+
+    <!-- RSVP Form -->
+    <section class="scroll-section">
+        <h2 class="section-title">出席回覆</h2>
+        <form class="rsvp-form" id="rsvp-form">
+            <div class="form-group">
+                <label for="name">您的姓名 *</label>
+                <input type="text" id="name" name="name" required placeholder="請輸入您的姓名">
+            </div>
+
+            <div class="form-group">
+                <label for="email">電子郵件 *</label>
+                <input type="email" id="email" name="email" required placeholder="請輸入您的 Email">
+            </div>
+
+            <div class="form-group">
+                <label>是否出席婚禮？ *</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="attendance" value="yes" required>
+                        參加
+                    </label>
+                    <label>
+                        <input type="radio" name="attendance" value="no">
+                        無法參加
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="guest-count-group" style="display: none;">
+                <label for="guest-count">出席人數 *</label>
+                <select id="guest-count" name="guest-count">
+                    <option value="1">1 位</option>
+                    <option value="2">2 位</option>
+                    <option value="3">3 位</option>
+                    <option value="4">4 位</option>
+                    <option value="5">5 位</option>
+                    <option value="6">6 位</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dietary">飲食偏好</label>
+                <select id="dietary" name="dietary">
+                    <option value="none">葷食</option>
+                    <option value="vegetarian">素食</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>是否需要紙本喜帖？</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="paper-invite" value="no" checked>
+                        不需要
+                    </label>
+                    <label>
+                        <input type="radio" name="paper-invite" value="yes">
+                        需要
+                    </label>
+                </div>
+                <div class="address-group" id="address-group">
+                    <label for="address">寄送地址 *</label>
+                    <input type="text" id="address" name="address" placeholder="請輸入收件地址">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="song">推薦一首歌</label>
+                <input type="text" id="song" name="song" placeholder="分享您喜歡的歌，與我們做音樂交流">
+            </div>
+
+            <div class="form-group">
+                <label for="message">想對新人說的話</label>
+                <textarea id="message" name="message" placeholder="請留下您對新人的祝福..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">送出回覆</button>
+            <div class="form-message" id="form-message"></div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="scroll-section">
+        <p>感謝您見證我們的幸福時刻</p>
+        <p style="margin-top: 6px;">政廷 & 鈺鎔 &bull; 2026年9月12日</p>
+    </footer>
+
+    <script>
+        // Gallery Data
+        const photos = [
+            { src: 'images/photo1.jpg', fallback: 'https://picsum.photos/seed/wedding1/600/500' },
+            { src: 'images/photo2.jpg', fallback: 'https://picsum.photos/seed/wedding2/600/500' },
+            { src: 'images/photo3.jpg', fallback: 'https://picsum.photos/seed/wedding3/600/500' },
+            { src: 'images/photo4.jpg', fallback: 'https://picsum.photos/seed/wedding4/600/500' },
+            { src: 'images/photo5.jpg', fallback: 'https://picsum.photos/seed/wedding5/600/500' },
+            { src: 'images/photo6.jpg', fallback: 'https://picsum.photos/seed/wedding6/600/500' }
+        ];
+
+        let currentIndex = 0;
+        let startX = 0;
+        let isAnimating = false;
+        let direction = 1; // 1 = next, -1 = prev
+
+        const cardsContainer = document.getElementById('galleryCards');
+        const wrapper = document.getElementById('galleryWrapper');
+
+        // Position classes in order: left-far, left, center, right, right-far
+        const positions = ['position-left-far', 'position-left', 'position-center', 'position-right', 'position-right-far'];
+
+        function initGallery() {
+            cardsContainer.innerHTML = '';
+            // Create 5 cards for the stacking effect
+            for (let i = 0; i < 5; i++) {
+                const card = document.createElement('div');
+                card.className = `gallery-card ${positions[i]}`;
+                const photoIndex = getPhotoIndex(i);
+                card.innerHTML = `<img src="${photos[photoIndex].src}" alt="Photo ${photoIndex + 1}" onerror="this.src='${photos[photoIndex].fallback}'">`;
+                cardsContainer.appendChild(card);
+            }
+        }
+
+        function getPhotoIndex(offset) {
+            // Maps card position to photo index
+            // offset 0 = left-far, 1 = left, 2 = center, 3 = right, 4 = right-far
+            return (currentIndex + offset - 2 + photos.length) % photos.length;
+        }
+
+        function updateCards(animate = true) {
+            const cards = cardsContainer.querySelectorAll('.gallery-card');
+
+            // Add fade class to images before updating
+            cards.forEach(card => card.classList.add('fade-img'));
+
+            // First, animate the position change
+            cards.forEach((card, i) => {
+                card.className = `gallery-card ${positions[i]}`;
+            });
+
+            // After animation completes, update the images with fade effect
+            if (animate) {
+                setTimeout(() => {
+                    cards.forEach((card, i) => {
+                        const photoIndex = getPhotoIndex(i);
+                        const img = card.querySelector('img');
+                        img.src = photos[photoIndex].src;
+                        img.onerror = function() {
+                            this.src = photos[photoIndex].fallback;
+                        };
+                        // Remove fade class to show new image
+                        setTimeout(() => {
+                            card.classList.remove('fade-img');
+                        }, 50);
+                    });
+                    isAnimating = false;
+                }, 400);
+            } else {
+                cards.forEach((card, i) => {
+                    const photoIndex = getPhotoIndex(i);
+                    card.querySelector('img').src = photos[photoIndex].src;
+                    card.querySelector('img').onerror = function() {
+                        this.src = photos[photoIndex].fallback;
+                    };
+                    card.classList.remove('fade-img');
+                });
+            }
+        }
+
+        function goToNext() {
+            if (isAnimating) return;
+            isAnimating = true;
+            direction = 1;
+            currentIndex = (currentIndex + 1) % photos.length;
+            updateCards(true);
+        }
+
+        function goToPrev() {
+            if (isAnimating) return;
+            isAnimating = true;
+            direction = -1;
+            currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+            updateCards(true);
+        }
+
+        // Touch events with swipe distance tracking
+        let touchStartX = 0;
+        let touchCurrentX = 0;
+
+        wrapper.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+            touchCurrentX = touchStartX;
+        }, { passive: true });
+
+        wrapper.addEventListener('touchmove', e => {
+            touchCurrentX = e.touches[0].clientX;
+        }, { passive: true });
+
+        wrapper.addEventListener('touchend', e => {
+            const diff = touchCurrentX - touchStartX;
+            if (diff < -50) goToNext();
+            else if (diff > 50) goToPrev();
+            touchStartX = 0;
+            touchCurrentX = 0;
+        }, { passive: true });
+
+        // Mouse drag events
+        let mouseStartX = 0;
+        let mouseCurrentX = 0;
+        let mouseDown = false;
+
+        wrapper.addEventListener('mousedown', e => {
+            mouseDown = true;
+            mouseStartX = e.clientX;
+            mouseCurrentX = mouseStartX;
+        });
+
+        wrapper.addEventListener('mousemove', e => {
+            if (!mouseDown) return;
+            mouseCurrentX = e.clientX;
+        });
+
+        wrapper.addEventListener('mouseup', e => {
+            if (!mouseDown) return;
+            const diff = mouseCurrentX - mouseStartX;
+            if (diff < -50) goToNext();
+            else if (diff > 50) goToPrev();
+            mouseDown = false;
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            mouseDown = false;
+        });
+
+        // Keyboard
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') goToPrev();
+            if (e.key === 'ArrowRight') goToNext();
+        });
+
+        // Scroll Animation
+        function handleScrollAnimation() {
+            const sections = document.querySelectorAll('.scroll-section');
+            const windowHeight = window.innerHeight;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const triggerPoint = windowHeight * 0.85;
+
+                if (sectionTop < triggerPoint) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // Initialize
+        initGallery();
+        window.addEventListener('scroll', handleScrollAnimation);
+        handleScrollAnimation(); // Initial check
+
+        // Attendance toggle
+        document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const guestGroup = document.getElementById('guest-count-group');
+                guestGroup.style.display = this.value === 'yes' ? 'block' : 'none';
+                document.getElementById('guest-count').required = this.value === 'yes';
+            });
+        });
+
+        // Paper invitation toggle
+        document.querySelectorAll('input[name="paper-invite"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const addressGroup = document.getElementById('address-group');
+                addressGroup.classList.toggle('show', this.value === 'yes');
+                document.getElementById('address').required = this.value === 'yes';
+            });
+        });
+
+        // Form submission
+        document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            console.log('表單提交：', data);
+
+            const messageEl = document.getElementById('form-message');
+            messageEl.className = 'form-message success';
+            messageEl.textContent = '感謝您的回覆！我們期待在婚禮上與您相見。';
+            messageEl.style.display = 'block';
+
+            this.reset();
+            document.getElementById('guest-count-group').style.display = 'none';
+            document.getElementById('address-group').classList.remove('show');
+        });
+    </script>
+</body>
+</html>
