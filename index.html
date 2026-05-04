@@ -6,7 +6,7 @@
     <title>婚禮邀請 | Wedding Invitation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
         /* 日式奶茶色系 */
         :root {
@@ -30,10 +30,13 @@
 
         .hero { min-height: 55vh; background: linear-gradient(180deg, var(--mt-light) 0%, var(--mt-cream) 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 20px 40px; position: relative; }
         .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat; opacity: 0.12; }
-        .hero-content { position: relative; z-index: 1; }
-        .couple-names { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 400; color: var(--mt-text-dark); letter-spacing: 0.15em; }
-        .couple-names .and { margin: 0 15px; color: var(--mt-accent); font-size: 0.6em; }
-        .wedding-date { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--mt-text); margin-top: 20px; letter-spacing: 0.2em; border-top: 1px solid var(--mt-dark); border-bottom: 1px solid var(--mt-dark); padding: 10px 30px; display: inline-block; }
+        .hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+        
+        /* 更新：上下排版與字體優化 */
+        .couple-names { display: flex; flex-direction: column; align-items: center; line-height: 1.1; font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 400; color: var(--mt-text-dark); letter-spacing: 0.15em; }
+        .couple-names .and { margin: 12px 0; color: var(--mt-accent); font-size: 0.45em; font-style: italic; }
+        
+        .wedding-date { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--mt-text); margin-top: 30px; letter-spacing: 0.2em; border-top: 1px solid var(--mt-dark); border-bottom: 1px solid var(--mt-dark); padding: 10px 30px; display: inline-block; }
 
         section { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
         .section-title { text-align: center; font-size: clamp(1.4rem, 3.5vw, 2rem); color: var(--mt-text-dark); margin-bottom: 35px; font-weight: 400; letter-spacing: 0.15em; }
@@ -93,7 +96,10 @@
 
         @media (max-width: 768px) {
             .hero { min-height: 45vh; padding: 40px 15px 30px; }
-            .couple-names { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+            
+            /* 更新：手機版因為上下堆疊，可以大膽放大字體 */
+            .couple-names { font-size: clamp(2.2rem, 10vw, 3rem); }
+            
             section { padding: 40px 15px; }
             .gallery-wrapper { height: 420px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); }
             .gallery-card { width: 78%; height: 85%; border-radius: 20px; }
@@ -114,7 +120,12 @@
     <section class="hero scroll-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <div class="couple-names">Zheng Ting <span class="and">&</span> Yu Rong</div>
+            <!-- 更新：將名字結構拆分為獨立元素，實現完美的上下排版 -->
+            <div class="couple-names">
+                <span>Zheng Ting</span>
+                <span class="and">&</span>
+                <span>Yu Rong</span>
+            </div>
             <div class="wedding-date">2026年9月12日 我們的婚禮</div>
         </div>
     </section>
