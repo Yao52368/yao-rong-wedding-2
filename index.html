@@ -38,7 +38,6 @@
             line-height: 1.8;
         }
 
-        /* Scroll Animation Classes */
         .scroll-section {
             opacity: 0;
             transform: translateY(50px);
@@ -103,7 +102,6 @@
             display: inline-block;
         }
 
-        /* Sections */
         section {
             padding: 50px 20px;
             max-width: 1200px;
@@ -128,7 +126,6 @@
             margin: 12px auto 0;
         }
 
-        /* Intro Text */
         .intro-text {
             text-align: center;
             padding: 30px 20px;
@@ -139,7 +136,7 @@
             line-height: 2;
         }
 
-        /* Stacked Carousel Gallery */
+        /* --- 全新優化後的照片輪播 (Gallery) 樣式 --- */
         .gallery-section {
             padding: 40px 0;
             overflow: hidden;
@@ -155,77 +152,82 @@
             cursor: grab;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: pan-y;
+            touch-action: pan-y; /* 允許上下滾動網頁，但攔截左右滑動 */
         }
 
         .gallery-wrapper:active {
             cursor: grabbing;
         }
 
-        /* 所有照片卡片 */
         .gallery-card {
             position: absolute;
             width: 55%;
             height: 85%;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(107, 91, 79, 0.35);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 15px 40px rgba(107, 91, 79, 0.2);
+            /* 溫柔緩慢的動畫曲線設計 */
+            transition: all 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none; /* 預設無法點擊，防止點到隱藏照片 */
         }
 
         .gallery-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.4s ease;
+            pointer-events: none; /* 防止圖片預設的拖拽行為干擾 */
         }
 
-        .gallery-card.fade-img > img {
-            opacity: 0;
-        }
-
-        /* 左側位置 */
-        .gallery-card.position-left-far {
-            left: -30%;
-            transform: translateY(-50%) scale(0.7);
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .gallery-card.position-left {
-            left: 3%;
-            top: 50%;
-            transform: translateY(-50%) scale(0.65);
-            opacity: 0.5;
-            z-index: 2;
-        }
-
-        /* 中間位置 */
-        .gallery-card.position-center {
-            left: 50%;
-            top: 50%;
+        /* 中間：當前照片 */
+        .gallery-card.active {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
-            z-index: 5;
+            z-index: 3;
+            pointer-events: auto;
+            box-shadow: 0 20px 50px rgba(107, 91, 79, 0.35);
         }
 
-        /* 右側位置 */
-        .gallery-card.position-right {
-            right: 3%;
-            top: 50%;
-            transform: translateY(-50%) scale(0.65);
+        /* 左側照片 */
+        .gallery-card.prev {
+            left: 20%;
+            transform: translate(-50%, -50%) scale(0.75);
             opacity: 0.5;
             z-index: 2;
+            pointer-events: auto; /* 允許點擊切換 */
+            cursor: pointer;
         }
 
-        .gallery-card.position-right-far {
-            right: -30%;
-            transform: translateY(-50%) scale(0.7);
+        /* 右側照片 */
+        .gallery-card.next {
+            left: 80%;
+            transform: translate(-50%, -50%) scale(0.75);
+            opacity: 0.5;
+            z-index: 2;
+            pointer-events: auto; /* 允許點擊切換 */
+            cursor: pointer;
+        }
+
+        /* 隱藏於最左側 */
+        .gallery-card.prev-far {
+            left: -10%;
+            transform: translate(-50%, -50%) scale(0.6);
             opacity: 0;
             z-index: 1;
         }
 
-        /* Navigation arrows */
+        /* 隱藏於最右側 */
+        .gallery-card.next-far {
+            left: 110%;
+            transform: translate(-50%, -50%) scale(0.6);
+            opacity: 0;
+            z-index: 1;
+        }
+
         .gallery-nav {
             position: absolute;
             top: 50%;
@@ -248,12 +250,12 @@
 
         .gallery-nav:hover {
             color: var(--mt-accent);
-            background: rgba(253, 248, 243, 0.8);
+            background: rgba(253, 248, 243, 0.9);
             transform: translateY(-50%) scale(1.1);
         }
 
-        .gallery-prev { left: 12%; }
-        .gallery-next { right: 12%; }
+        .gallery-prev { left: 8%; }
+        .gallery-next { right: 8%; }
 
         /* Event Details */
         .event-card {
@@ -331,10 +333,10 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 1.5px solid var(--mt-dark);
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 10px 12px;
+            border: 1px solid var(--mt-dark);
+            border-radius: 20px;
+            font-size: 0.95rem;
             background: var(--mt-cream);
             color: var(--mt-text);
             transition: border-color 0.3s;
@@ -349,8 +351,9 @@
         }
 
         .form-group textarea {
-            min-height: 70px;
+            min-height: 60px;
             resize: vertical;
+            border-radius: 15px;
         }
 
         .radio-group {
@@ -362,13 +365,41 @@
         .radio-group label {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
             font-weight: normal;
         }
 
         .radio-group input[type="radio"] {
-            width: auto;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--mt-dark);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: var(--mt-cream);
+            flex-shrink: 0;
+            margin: 2px;
+        }
+
+        .radio-group input[type="radio"]:checked {
+            border-color: var(--mt-accent);
+            background: var(--mt-accent);
+        }
+
+        .radio-group input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
         }
 
         .submit-btn {
@@ -404,12 +435,6 @@
             color: #22543D;
         }
 
-        .form-message.error {
-            display: block;
-            background: #FED7D7;
-            color: #742A2A;
-        }
-
         .address-group {
             display: none;
             margin-top: 12px;
@@ -422,7 +447,6 @@
             display: block;
         }
 
-        /* Footer */
         footer {
             background: var(--mt-text-dark);
             color: var(--mt-light);
@@ -447,56 +471,32 @@
                 font-size: clamp(1.6rem, 7vw, 2.4rem);
             }
 
-            .couple-names .and {
-                margin: 0 10px;
-                font-size: 0.5em;
-            }
+            section { padding: 40px 15px; }
 
-            section {
-                padding: 40px 15px;
-            }
-
-            .gallery-wrapper {
-                height: 380px;
-            }
+            .gallery-wrapper { height: 380px; }
 
             .gallery-card {
                 width: 70%;
                 height: 80%;
             }
 
-            .gallery-card.position-left {
-                left: -20%;
-                transform: translateY(-50%) scale(0.6);
-            }
-
-            .gallery-card.position-right {
-                right: -20%;
-                transform: translateY(-50%) scale(0.6);
-            }
+            .gallery-card.prev { left: 10%; transform: translate(-50%, -50%) scale(0.7); }
+            .gallery-card.next { left: 90%; transform: translate(-50%, -50%) scale(0.7); }
+            .gallery-card.prev-far { left: -30%; }
+            .gallery-card.next-far { left: 130%; }
 
             .gallery-nav {
                 font-size: 2rem;
                 padding: 10px;
-                background: rgba(253, 248, 243, 0.7);
-                border-radius: 50%;
                 width: 40px;
                 height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
 
-            .gallery-prev { left: 5%; }
-            .gallery-next { right: 5%; }
+            .gallery-prev { left: 2%; }
+            .gallery-next { right: 2%; }
 
-            .rsvp-form {
-                padding: 25px 20px;
-            }
-
-            .radio-group {
-                gap: 18px;
-            }
+            .rsvp-form { padding: 25px 20px; }
+            .radio-group { gap: 18px; }
         }
     </style>
 </head>
@@ -582,12 +582,9 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="dietary">飲食偏好</label>
-                <select id="dietary" name="dietary">
-                    <option value="none">葷食</option>
-                    <option value="vegetarian">素食</option>
-                </select>
+            <div class="form-group" id="dietary-group" style="display: none;">
+                <label>飲食偏好 *</label>
+                <div id="dietary-options"></div>
             </div>
 
             <div class="form-group">
@@ -609,13 +606,13 @@
             </div>
 
             <div class="form-group">
-                <label for="song">推薦一首歌</label>
-                <input type="text" id="song" name="song" placeholder="分享您喜歡的歌，與我們做音樂交流">
+                <label for="song">推薦一首歌 *</label>
+                <input type="text" id="song" name="song" required placeholder="分享您喜歡的歌，與我們做音樂交流">
             </div>
 
             <div class="form-group">
-                <label for="message">想對新人說的話</label>
-                <textarea id="message" name="message" placeholder="請留下您對新人的祝福..."></textarea>
+                <label for="message">想對新人說的話 *</label>
+                <textarea id="message" name="message" required placeholder="請留下您對新人的祝福..."></textarea>
             </div>
 
             <button type="submit" class="submit-btn">送出回覆</button>
@@ -630,7 +627,7 @@
     </footer>
 
     <script>
-        // Gallery Data
+        // Gallery Data (照片清單)
         const photos = [
             { src: 'images/photo1.jpg', fallback: 'https://picsum.photos/seed/wedding1/600/500' },
             { src: 'images/photo2.jpg', fallback: 'https://picsum.photos/seed/wedding2/600/500' },
@@ -641,146 +638,122 @@
         ];
 
         let currentIndex = 0;
-        let startX = 0;
-        let isAnimating = false;
-        let direction = 1; // 1 = next, -1 = prev
-
         const cardsContainer = document.getElementById('galleryCards');
         const wrapper = document.getElementById('galleryWrapper');
 
-        // Position classes in order: left-far, left, center, right, right-far
-        const positions = ['position-left-far', 'position-left', 'position-center', 'position-right', 'position-right-far'];
-
+        // --- 全新 JavaScript 渲染邏輯 ---
         function initGallery() {
             cardsContainer.innerHTML = '';
-            // Create 5 cards for the stacking effect
-            for (let i = 0; i < 5; i++) {
+            
+            // 將所有照片先渲染至 DOM 中，只靠 CSS class 控制位置，動畫最順暢
+            photos.forEach((photo, index) => {
                 const card = document.createElement('div');
-                card.className = `gallery-card ${positions[i]}`;
-                const photoIndex = getPhotoIndex(i);
-                card.innerHTML = `<img src="${photos[photoIndex].src}" alt="Photo ${photoIndex + 1}" onerror="this.src='${photos[photoIndex].fallback}'">`;
-                cardsContainer.appendChild(card);
-            }
-        }
-
-        function getPhotoIndex(offset) {
-            // Maps card position to photo index
-            // offset 0 = left-far, 1 = left, 2 = center, 3 = right, 4 = right-far
-            return (currentIndex + offset - 2 + photos.length) % photos.length;
-        }
-
-        function updateCards(animate = true) {
-            const cards = cardsContainer.querySelectorAll('.gallery-card');
-
-            // Add fade class to images before updating
-            cards.forEach(card => card.classList.add('fade-img'));
-
-            // First, animate the position change
-            cards.forEach((card, i) => {
-                card.className = `gallery-card ${positions[i]}`;
-            });
-
-            // After animation completes, update the images with fade effect
-            if (animate) {
-                setTimeout(() => {
-                    cards.forEach((card, i) => {
-                        const photoIndex = getPhotoIndex(i);
-                        const img = card.querySelector('img');
-                        img.src = photos[photoIndex].src;
-                        img.onerror = function() {
-                            this.src = photos[photoIndex].fallback;
-                        };
-                        // Remove fade class to show new image
-                        setTimeout(() => {
-                            card.classList.remove('fade-img');
-                        }, 50);
-                    });
-                    isAnimating = false;
-                }, 400);
-            } else {
-                cards.forEach((card, i) => {
-                    const photoIndex = getPhotoIndex(i);
-                    card.querySelector('img').src = photos[photoIndex].src;
-                    card.querySelector('img').onerror = function() {
-                        this.src = photos[photoIndex].fallback;
-                    };
-                    card.classList.remove('fade-img');
+                card.className = 'gallery-card';
+                card.innerHTML = `<img src="${photo.src}" alt="Photo ${index + 1}" onerror="this.src='${photo.fallback}'">`;
+                
+                // 點擊左右兩側半透明的照片時，也能溫柔地觸發切換
+                card.addEventListener('click', () => {
+                    if (card.classList.contains('prev')) goToPrev();
+                    if (card.classList.contains('next')) goToNext();
                 });
-            }
+                
+                cardsContainer.appendChild(card);
+            });
+            
+            updateGallery();
         }
 
+        // 依據 currentIndex 重新分配卡片的 class
+        function updateGallery() {
+            const cards = document.querySelectorAll('.gallery-card');
+            const total = cards.length;
+
+            cards.forEach((card, index) => {
+                // 先清除所有的狀態 class
+                card.classList.remove('active', 'prev', 'next', 'prev-far', 'next-far');
+
+                // 計算相對位置並賦予 class，CSS 的 transition 會自動接手產生流暢動畫
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                } else if (index === (currentIndex - 1 + total) % total) {
+                    card.classList.add('prev');
+                } else if (index === (currentIndex + 1) % total) {
+                    card.classList.add('next');
+                } else if (index === (currentIndex - 2 + total) % total) {
+                    card.classList.add('prev-far');
+                } else if (index === (currentIndex + 2) % total) {
+                    card.classList.add('next-far');
+                }
+            });
+        }
+
+        // 下一張 / 上一張功能
         function goToNext() {
-            if (isAnimating) return;
-            isAnimating = true;
-            direction = 1;
             currentIndex = (currentIndex + 1) % photos.length;
-            updateCards(true);
+            updateGallery();
         }
 
         function goToPrev() {
-            if (isAnimating) return;
-            isAnimating = true;
-            direction = -1;
             currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-            updateCards(true);
+            updateGallery();
         }
 
-        // Touch events with swipe distance tracking
-        let touchStartX = 0;
-        let touchCurrentX = 0;
+        // --- 手機與電腦通用的順暢滑動檢測 (Swipe Detection) ---
+        let startX = 0;
+        let isDragging = false;
+        const SWIPE_THRESHOLD = 50; // 滑動超過 50px 判定為切換
 
+        // 手機觸控事件
         wrapper.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-            touchCurrentX = touchStartX;
-        }, { passive: true });
-
-        wrapper.addEventListener('touchmove', e => {
-            touchCurrentX = e.touches[0].clientX;
+            startX = e.touches[0].clientX;
+            isDragging = true;
         }, { passive: true });
 
         wrapper.addEventListener('touchend', e => {
-            const diff = touchCurrentX - touchStartX;
-            if (diff < -50) goToNext();
-            else if (diff > 50) goToPrev();
-            touchStartX = 0;
-            touchCurrentX = 0;
-        }, { passive: true });
-
-        // Mouse drag events
-        let mouseStartX = 0;
-        let mouseCurrentX = 0;
-        let mouseDown = false;
-
-        wrapper.addEventListener('mousedown', e => {
-            mouseDown = true;
-            mouseStartX = e.clientX;
-            mouseCurrentX = mouseStartX;
+            if (!isDragging) return;
+            const endX = e.changedTouches[0].clientX;
+            handleSwipe(startX, endX);
+            isDragging = false;
         });
 
-        wrapper.addEventListener('mousemove', e => {
-            if (!mouseDown) return;
-            mouseCurrentX = e.clientX;
+        // 電腦滑鼠事件
+        wrapper.addEventListener('mousedown', e => {
+            startX = e.clientX;
+            isDragging = true;
         });
 
         wrapper.addEventListener('mouseup', e => {
-            if (!mouseDown) return;
-            const diff = mouseCurrentX - mouseStartX;
-            if (diff < -50) goToNext();
-            else if (diff > 50) goToPrev();
-            mouseDown = false;
+            if (!isDragging) return;
+            const endX = e.clientX;
+            handleSwipe(startX, endX);
+            isDragging = false;
         });
 
         wrapper.addEventListener('mouseleave', () => {
-            mouseDown = false;
+            isDragging = false;
         });
 
-        // Keyboard
+        // 判斷滑動方向並執行
+        function handleSwipe(start, end) {
+            const diff = start - end; // 正值表示向左滑(看下一張)，負值表示向右滑(看上一張)
+            
+            if (Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0) {
+                    goToNext();
+                } else {
+                    goToPrev();
+                }
+            }
+        }
+
+        // 鍵盤左右鍵支援
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowLeft') goToPrev();
             if (e.key === 'ArrowRight') goToNext();
         });
 
-        // Scroll Animation
+
+        // --- 原有表單與滾動動畫邏輯 ---
         function handleScrollAnimation() {
             const sections = document.querySelectorAll('.scroll-section');
             const windowHeight = window.innerHeight;
@@ -800,16 +773,55 @@
         window.addEventListener('scroll', handleScrollAnimation);
         handleScrollAnimation(); // Initial check
 
-        // Attendance toggle
+        function generateDietaryOptions() {
+            const guestCount = parseInt(document.getElementById('guest-count').value) || 1;
+            const container = document.getElementById('dietary-options');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= guestCount; i++) {
+                const label = document.createElement('label');
+                label.htmlFor = `dietary-${i}`;
+                label.textContent = `第 ${i} 位`;
+                label.style.display = 'block';
+                label.style.marginTop = '8px';
+                label.style.marginBottom = '4px';
+
+                const select = document.createElement('select');
+                select.id = `dietary-${i}`;
+                select.name = `dietary-${i}`;
+                select.required = true;
+                select.innerHTML = `
+                    <option value="">請選擇</option>
+                    <option value="none">葷食</option>
+                    <option value="vegetarian">素食</option>
+                `;
+
+                container.appendChild(label);
+                container.appendChild(select);
+            }
+        }
+
         document.querySelectorAll('input[name="attendance"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const guestGroup = document.getElementById('guest-count-group');
-                guestGroup.style.display = this.value === 'yes' ? 'block' : 'none';
-                document.getElementById('guest-count').required = this.value === 'yes';
+                const dietaryGroup = document.getElementById('dietary-group');
+                if (this.value === 'yes') {
+                    guestGroup.style.display = 'block';
+                    dietaryGroup.style.display = 'block';
+                    document.getElementById('guest-count').required = true;
+                    generateDietaryOptions();
+                } else {
+                    guestGroup.style.display = 'none';
+                    dietaryGroup.style.display = 'none';
+                    document.getElementById('guest-count').required = false;
+                    document.getElementById('guest-count').value = '';
+                    document.getElementById('dietary-options').innerHTML = '';
+                }
             });
         });
 
-        // Paper invitation toggle
+        document.getElementById('guest-count').addEventListener('change', generateDietaryOptions);
+
         document.querySelectorAll('input[name="paper-invite"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const addressGroup = document.getElementById('address-group');
@@ -818,7 +830,6 @@
             });
         });
 
-        // Form submission
         document.getElementById('rsvp-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
