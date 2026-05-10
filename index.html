@@ -32,7 +32,6 @@
         .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/hero.jpg') center/cover no-repeat, url('https://picsum.photos/seed/herowedding/1920/1080') center/cover no-repeat; opacity: 0.12; }
         .hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
         
-        /* 更新：上下排版與字體優化 */
         .couple-names { display: flex; flex-direction: column; align-items: center; line-height: 1.1; font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 400; color: var(--mt-text-dark); letter-spacing: 0.15em; }
         .couple-names .and { margin: 12px 0; color: var(--mt-accent); font-size: 0.45em; font-style: italic; }
         
@@ -96,10 +95,7 @@
 
         @media (max-width: 768px) {
             .hero { min-height: 45vh; padding: 40px 15px 30px; }
-            
-            /* 更新：手機版因為上下堆疊，可以大膽放大字體 */
             .couple-names { font-size: clamp(2.2rem, 10vw, 3rem); }
-            
             section { padding: 40px 15px; }
             .gallery-wrapper { height: 420px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%); }
             .gallery-card { width: 78%; height: 85%; border-radius: 20px; }
@@ -120,7 +116,6 @@
     <section class="hero scroll-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <!-- 更新：將名字結構拆分為獨立元素，實現完美的上下排版 -->
             <div class="couple-names">
                 <span>Zheng Ting</span>
                 <span class="and">&</span>
@@ -143,8 +138,8 @@
             <div class="gallery-wrapper" id="galleryWrapper">
                 <div id="galleryCards"></div>
             </div>
-            <span class="gallery-nav gallery-prev" onclick="goToPrev()">&#10094;</span>
-            <span class="gallery-nav gallery-next" onclick="goToNext()">&#10095;</span>
+            <span class="gallery-nav gallery-prev" onclick="goToPrev()">❮</span>
+            <span class="gallery-nav gallery-next" onclick="goToNext()">❯</span>
         </div>
     </section>
 
@@ -154,7 +149,7 @@
             <div class="icon">💒</div>
             <h3>婚禮晚宴</h3>
             <p class="date">2026年9月12日 星期六</p>
-            <p class="time">16:00 證婚儀式 &bull; 17:00 晚宴</p>
+            <p class="time">16:00 證婚儀式 • 17:00 晚宴</p>
             <p>辛志平 taivii 餐酒館 <a href="https://www.google.com/maps/search/?api=1&query=辛志平taivii餐酒館" target="_blank" class="location-link">📍</a></p>
         </div>
     </section>
@@ -225,7 +220,7 @@
 
     <footer class="scroll-section">
         <p>感謝您見證我們的幸福時刻</p>
-        <p style="margin-top: 6px;">Zheng Ting & Yu Rong &bull; 2026年9月12日</p>
+        <p style="margin-top: 6px;">Zheng Ting & Yu Rong • 2026年9月12日</p>
     </footer>
 
     <script>
